@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>Soporte ticket service</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- Custom styles for this template -->
+    <link href="#" th:href="@{/css/style.css}" rel="stylesheet" />
+    
+ 	<link href="#" th:href="@{/css/tickets.css}" rel="stylesheet" />
+ 	
+  </head>
+
+  <body>
+	
+	<div class="container">
+	
+			<h2>Bienvenido, <span th:text="${username}"></span> !</h2>
+
+
+
+		<div class="row">
+			<div class="col-sm-2">
+				<form th:action="@{/logout}" method="POST">
+					<button class="btn btn-lg btn-primary" type="submit"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Desconectar</button>
+				</form>	
+			</div>
+			<div class="col-sm-2">
+				<a href="#" th:href="@{/tickets/ticketform?id=0}">
+					<button th:if= "${admin == true}" class="btn btn-lg btn-secondary" type="submit"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Crear ticket</button>
+				</a>
+			</div>
+		</div>
+		<div th:if= "${added == 1}" class="alert alert-success" role="alert">correctamente añadido</div>
+		<div th:if= "${added == 0}" class="alert alert-danger" role="alert">error al añadir</div>
+		<div th:if= "${updated == 1}" class="alert alert-success" role="alert">correctamente actualizado</div>
+		<div th:if= "${updated == 0}" class="alert alert-danger" role="alert">error al actualizar</div>
+		<br/>
+		<div class="panel panel-default">
+			<div class="panel-heading"></div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>Título</th>
+						<th>Asignado a</th>		
+						<th>Estado</th>				
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="ticket : ${tickets}">
+						<td th:text="${ticket.id}"></td>
+						<td th:text="${ticket.title}"></td>
+						<td th:text="${ticket.designated}"></td>
+						<td th:text="${ticket.state}"></td>
+						<td th:text="${ticket.usa_recomendacion}"></td>
+<!-- 						<td th:text="${ticket.fecha_open}"></td>
+						<td th:text="${ticket.fecha_close}"></td> -->
+
+						<td>
+							<a href="#" th:href="@{/tickets/ticketinfo?id=__${ticket.id}__&usa_recomendacion=__${ticket.usa_recomendacion}__}">
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+							</a>
+							<a href="#" th:href="@{/tickets/removeticket?id=__${ticket.id}__}">
+							<button th:if= "${admin == true}" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+</body>
+</html>

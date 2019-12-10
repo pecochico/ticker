@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Soporte ticket</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link href="#" th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+	<div class="jumbotron">
+		<div class="container">
+			<h2>Descripción del ticket</h2>
+			<br/>
+		<div th:if= "${updated == 1}" class="alert alert-success" role="alert">correctamente actualizado</div>
+		<div th:if= "${updated == 0}" class="alert alert-danger" role="alert">error al actualizar</div>
+		
+
+			<form action="#" th:action="@{/tickets/updateticket}" th:object="${ticketModel}" method="post">
+				<input type="hidden" th:field="*{id}"></input>	
+				<input type="hidden" th:field="*{fecha_open}"></input>
+				<input type="hidden" th:field="*{usa_recomendacion}"></input>
+				
+				<div class="row">
+				    <div class="col-sm-8">
+				    Título:<input type="text" class="form-control" th:field="*{title}" th:value="${title}"></input>
+				    </div>
+
+				    <div class="col-sm-2">
+				    Asignado a: <input type="text" class="form-control" th:field="*{designated}" th:value="${designated}"></input>
+				    </div>
+			    
+<!-- 				    <div class="col-sm-2">
+				    Estado: <input type="text" class="form-control" th:field="*{state}" th:value="${state}"></input>
+				    </div> -->
+				    <div class="col-sm-2">
+				    <div class="form-group">
+							 Estado: <select class="form-control" th:field="*{state}">
+							    <option th:value="abierto" th:text="abierto"></option>
+							    <option th:value="cerrado" th:text="cerrado"></option>
+							  			</select>
+							</div></div>
+				</div>
+				
+				<br/>
+				Resolución aplicada: <textarea class="form-control" rows="3" th:field="*{resolution}" th:value="${resolution}"></textarea>
+			
+				<br/>
+
+
+				    <div class="col-sm-2">
+						<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Actualizar ticket</button>
+					</div>			   
+
+					<br/>
+					<br/>
+							
+				<div class="container">	</div>
+				  <h2>Recomendaciones</h2>
+  					<h5>Se han encontrado tickets resueltos que pueden facilitar la resolución de este ticket</h5> 	
+				<table class="table table-striped table-bordered table-hover table-condensed">
+				<thead>
+					<tr class="info">
+						<th>Id</th>
+						<th>Título</th>
+						<th>Resolución</th>	
+						<!-- <th>Aplicar</th> -->				
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="rec : ${recomendaciones}">
+						<td th:text="${rec.id}"></td>
+						<td th:text="${rec.title}"></td>
+						<td th:text="${rec.resolution}"></td>
+<!-- 						<td>
+						<input type="radio" th:value="${rec.resolution}" />
+		                <div class="custom-control custom-radio"></div>
+						</td> -->
+						<td>
+						<a href="#" th:href="@{/tickets/ticketinfo?id=__${ticketModel.id}__&recomendacion=__${rec.resolution}__&usa_recomendacion=1}">
+							<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+							</a>
+							</td> 
+					</tr>
+				</tbody>
+			</table>	
+	</form>		
+				
+			 		<div class="col-sm-2">
+						<a href="#" th:href="@{/tickets/cancel}">
+						<button class="btn btn-secondary" type="submit"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar</button>
+						</a>
+					</div>
+		</div>
+	</div>
+
+</body>
+</html>
